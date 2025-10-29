@@ -7,7 +7,7 @@ let stories = [
         title: "The Lost Temple of Zorath",
         description: "Explore ancient ruins and uncover hidden treasures in this jungle adventure. Your choices determine the fate of forgotten civilizations.",
         genre: "fantasy",
-        author: "Ajith Jayaram",
+        author: "AjithJayaram",
         created: "2024-01-15",
         coverColor: "#e6b325",
         chapters: [
@@ -42,7 +42,7 @@ let stories = [
         title: "Dragon's Peak Expedition",
         description: "Scale treacherous mountains to confront the legendary ice dragon in this epic high-fantasy quest.",
         genre: "fantasy",
-        author: "Ajith Jayaram",
+        author: "AjithJayaram",
         created: "2024-01-20",
         coverColor: "#4a90e2",
         chapters: [
@@ -427,7 +427,7 @@ function saveNewStory() {
         title,
         description,
         genre,
-        author: "Ajith Jayaram",
+        author: "AjithJayaram",
         created: new Date().toISOString().split('T')[0],
         coverColor: getRandomColor(),
         chapters: [
@@ -735,7 +735,7 @@ function importStory(storyData) {
     
     // Enhance story data
     storyData.id = Date.now();
-    storyData.author = storyData.author || "Ajith Jayaram";
+    storyData.author = storyData.author || "AjithJayaram";
     storyData.created = storyData.created || new Date().toISOString().split('T')[0];
     storyData.coverColor = storyData.coverColor || getRandomColor();
     storyData.genre = storyData.genre || 'fantasy';
@@ -879,7 +879,7 @@ function exportAsText() {
     
     let textContent = `NARRATIVE NEXUS STORY EXPORT\n`;
     textContent += `Title: ${currentStoryForShare.title}\n`;
-    textContent += `Author: ${currentStoryForShare.author || 'Ajith Jayaram'}\n`;
+    textContent += `Author: ${currentStoryForShare.author || 'AjithJayaram'}\n`;
     textContent += `Genre: ${formatGenre(currentStoryForShare.genre)}\n`;
     textContent += `Description: ${currentStoryForShare.description}\n`;
     textContent += `Chapters: ${currentStoryForShare.chapters.length}\n\n`;
@@ -1085,4 +1085,5 @@ const emptyStateCSS = `
 const style = document.createElement('style');
 style.textContent = emptyStateCSS;
 document.head.appendChild(style);
+
 
