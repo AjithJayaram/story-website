@@ -355,6 +355,39 @@ body {
     margin: 20px 0;
 }
 
+/* QR Code Styles */
+.qr-section {
+    text-align: center;
+    margin: 20px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 2px dashed #e0e0e0;
+}
+
+.qr-section h4 {
+    margin-bottom: 15px;
+    color: #1a2a6c;
+    font-family: 'Cinzel', serif;
+}
+
+.qrcode-container {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
+}
+
+.qr-hint {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+    font-style: italic;
+}
+
 .import-options {
     display: grid;
     gap: 20px;
@@ -461,5 +494,14 @@ body {
     
     .story-actions {
         flex-direction: column;
+    }
+    
+    .share-link-container {
+        flex-direction: column;
+    }
+    
+    .qrcode-container canvas {
+        max-width: 200px;
+        max-height: 200px;
     }
 }
