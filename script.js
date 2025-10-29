@@ -78,11 +78,13 @@ const importStoryBtn = document.getElementById('importStoryBtn');
 const jsonFileInput = document.getElementById('jsonFileInput');
 const importText = document.getElementById('importText');
 const importFromTextBtn = document.getElementById('importFromTextBtn');
+const qrcodeContainer = document.getElementById('qrcode');
 
 // Current story state
 let currentStory = null;
 let currentChapter = null;
 let currentStoryForShare = null;
+let qrCodeInstance = null;
 
 // Initialize the app
 function init() {
@@ -268,8 +270,32 @@ function openShareModal() {
     const shareUrl = `${window.location.origin}${window.location.pathname}?import=${storyData}`;
     shareLink.value = shareUrl;
     
+    // Generate QR Code
+    generateQRCode(shareUrl);
+    
     shareModal.classList.add('active');
     showToast('Share link generated!');
+}
+
+function generateQRCode(url) {
+    // Clear previous QR code
+    qrcodeContainer.innerHTML = '';
+    
+    // Generate new QR code
+    QRCode.toCanvas(qrcodeContainer, url, {
+        width: 200,
+        height: 200,
+        margin: 1,
+        color: {
+            dark: '#1a2a6c',
+            light: '#ffffff'
+        }
+    }, function(error) {
+        if (error) {
+            console.error('QR Code generation failed:', error);
+            qrcodeContainer.innerHTML = '<p style="color: red;">QR Code failed to generate</p>';
+        }
+    });
 }
 
 function openImportModal() {
@@ -280,13 +306,20 @@ function closeModals() {
     shareModal.classList.remove('active');
     importModal.classList.remove('active');
     currentStoryForShare = null;
+    // Clear QR code when closing modal
+    qrcodeContainer.innerHTML = '';
 }
 
 function copyShareLink() {
     shareLink.select();
     shareLink.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(shareLink.value);
-    showToast('Link copied to clipboard!');
+    navigator.clipboard.writeText(shareLink.value).then(() => {
+        showToast('Link copied to clipboard!');
+    }).catch(() => {
+        // Fallback for older browsers
+        document.execCommand('copy');
+        showToast('Link copied to clipboard!');
+    });
 }
 
 function exportAsJson() {
