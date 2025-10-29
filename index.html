@@ -6,6 +6,8 @@
     <title>Adventure Stories</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -68,6 +70,14 @@
                 <input type="text" id="shareLink" readonly class="share-input">
                 <button id="copyLinkBtn" class="btn-primary">📋 Copy</button>
             </div>
+            
+            <!-- QR Code Section -->
+            <div class="qr-section">
+                <h4>📱 Scan QR Code</h4>
+                <div id="qrcode" class="qrcode-container"></div>
+                <p class="qr-hint">Scan to open on mobile devices</p>
+            </div>
+            
             <div class="share-actions">
                 <button id="exportJsonBtn" class="btn-secondary">💾 Export as JSON</button>
                 <button id="exportTextBtn" class="btn-secondary">📄 Export as Text</button>
