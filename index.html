@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventure Stories</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1>📖 Adventure Stories</h1>
+            <p>Where your choices shape the journey</p>
+        </header>
+
+        <!-- Story Selection Screen -->
+        <div id="storySelection" class="screen active">
+            <h2>Choose Your Adventure</h2>
+            <div id="storyList" class="story-list">
+                <!-- Stories will be loaded here -->
+            </div>
+            <button id="addStoryBtn" class="btn-primary">➕ Add New Story</button>
+        </div>
+
+        <!-- Add Story Screen -->
+        <div id="addStoryScreen" class="screen">
+            <h2>Create New Story</h2>
+            <div class="form-group">
+                <input type="text" id="storyTitle" placeholder="Story Title" class="form-input">
+                <textarea id="storyDescription" placeholder="Story Description" class="form-textarea"></textarea>
+                <button id="saveStoryBtn" class="btn-primary">Save Story</button>
+                <button id="backToStoriesBtn" class="btn-secondary">← Back to Stories</button>
+            </div>
+        </div>
+
+        <!-- Story Play Screen -->
+        <div id="storyScreen" class="screen">
+            <div class="story-header">
+                <h2 id="currentStoryTitle"></h2>
+                <button id="backToSelectionBtn" class="btn-small">← Back</button>
+            </div>
+            <div class="story-content">
+                <div id="storyText" class="story-text"></div>
+                <div id="choices" class="choices">
+                    <!-- Choices will appear here -->
+                </div>
+            </div>
+            <div class="story-progress">
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <span id="progressText">Chapter 1 of 5</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

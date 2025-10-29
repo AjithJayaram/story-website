@@ -1,0 +1,58 @@
+{
+  "stories": [
+    {
+      "id": 1,
+      "title": "The Lost Temple of Zorath",
+      "description": "Explore ancient ruins and uncover hidden treasures in this jungle adventure.",
+      "chapters": [
+        {
+          "id": 1,
+          "text": "You stand at the edge of a dense jungle, the ancient temple of Zorath hidden somewhere within. The humid air carries the scent of exotic flowers and decay. Two paths diverge before you: one follows a overgrown stone path, the other leads into a dark cave entrance.",
+          "choices": [
+            { "text": "Follow the stone path", "nextChapter": 2 },
+            { "text": "Enter the dark cave", "nextChapter": 3 }
+          ]
+        },
+        {
+          "id": 2,
+          "text": "The stone path winds through vibrant jungle foliage. Suddenly, you encounter a massive stone door covered in intricate carvings. It seems locked, but there are two unusual mechanisms: one resembles a series of rotating disks, the other appears to be a musical instrument made of crystal.",
+          "choices": [
+            { "text": "Try to solve the rotating disk puzzle", "nextChapter": 4 },
+            { "text": "Attempt to play the crystal instrument", "nextChapter": 5 }
+          ]
+        },
+        {
+          "id": 3,
+          "text": "The cave is damp and dark, your torch casting dancing shadows on the walls. You discover an underground river with a small boat tied to a stalagmite. Further in, you notice ancient writings on the wall that might be important.",
+          "choices": [
+            { "text": "Take the boat down the river", "nextChapter": 6 },
+            { "text": "Study the ancient writings", "nextChapter": 7 }
+          ]
+        },
+        {
+          "id": 4,
+          "text": "After hours of careful manipulation, the disks align perfectly. The massive stone door groans open, revealing a treasure chamber filled with gold artifacts and precious gems. You've found the main treasure room!",
+          "choices": [
+            { "text": "Take the treasures and return home", "nextChapter": 8 },
+            { "text": "Explore further into the temple", "nextChapter": 9 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Dragon's Peak Expedition",
+      "description": "Climb the treacherous mountains to confront the legendary ice dragon.",
+      "chapters": [
+        {
+          "id": 1,
+          "text": "The village elder has tasked you with scaling Dragon's Peak to retrieve the legendary Ice Crystal. The mountain looms above you, its peak hidden in clouds. You can see two possible routes up the mountain.",
+          "choices": [
+            { "text": "Take the steep but direct cliff path", "nextChapter": 2 },
+            { "text": "Follow the longer but safer forest route", "nextChapter": 3 }
+          ]
+        }
+      ]
+    }
+  ]
+}
