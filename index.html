@@ -21,7 +21,10 @@
             <div id="storyList" class="story-list">
                 <!-- Stories will be loaded here -->
             </div>
-            <button id="addStoryBtn" class="btn-primary">➕ Add New Story</button>
+            <div class="action-buttons">
+                <button id="addStoryBtn" class="btn-primary">➕ Add New Story</button>
+                <button id="importStoryBtn" class="btn-secondary">📥 Import Story</button>
+            </div>
         </div>
 
         <!-- Add Story Screen -->
@@ -53,6 +56,43 @@
                 </div>
                 <span id="progressText">Chapter 1 of 5</span>
             </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <h3>📤 Share Your Story</h3>
+            <p>Copy this link to share your story:</p>
+            <div class="share-link-container">
+                <input type="text" id="shareLink" readonly class="share-input">
+                <button id="copyLinkBtn" class="btn-primary">📋 Copy</button>
+            </div>
+            <div class="share-actions">
+                <button id="exportJsonBtn" class="btn-secondary">💾 Export as JSON</button>
+                <button id="exportTextBtn" class="btn-secondary">📄 Export as Text</button>
+            </div>
+            <button id="closeShareModal" class="btn-small">Close</button>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <h3>📥 Import Story</h3>
+            <div class="import-options">
+                <div class="import-option">
+                    <h4>From JSON File</h4>
+                    <input type="file" id="jsonFileInput" accept=".json" class="file-input">
+                    <label for="jsonFileInput" class="file-label">Choose JSON File</label>
+                </div>
+                <div class="import-option">
+                    <h4>From Text</h4>
+                    <textarea id="importText" placeholder="Paste your story JSON here..." class="import-textarea"></textarea>
+                    <button id="importFromTextBtn" class="btn-primary">Import Story</button>
+                </div>
+            </div>
+            <button id="closeImportModal" class="btn-small">Close</button>
         </div>
     </div>
 

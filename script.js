@@ -7,7 +7,7 @@ let stories = [
         chapters: [
             {
                 id: 1,
-                text: "You stand at the edge of a dense jungle, the ancient temple of Zorath hidden somewhere within. The humid air carries the scent of exotic flowers and decay. Two paths diverge before you: one follows a overgrown stone path, the other leads into a dark cave entrance.",
+                text: "You stand at the edge of a dense jungle, the ancient temple of Zorath hidden somewhere within. The humid air carries the scent of exotic flowers and decay. Two paths diverge before you.",
                 choices: [
                     { text: "Follow the stone path", nextChapter: 2 },
                     { text: "Enter the dark cave", nextChapter: 3 }
@@ -15,26 +15,18 @@ let stories = [
             },
             {
                 id: 2,
-                text: "The stone path winds through vibrant jungle foliage. Suddenly, you encounter a massive stone door covered in intricate carvings. It seems locked, but there are two unusual mechanisms: one resembles a series of rotating disks, the other appears to be a musical instrument made of crystal.",
+                text: "The stone path winds through vibrant jungle foliage. You encounter a massive stone door covered in intricate carvings.",
                 choices: [
                     { text: "Try to solve the rotating disk puzzle", nextChapter: 4 },
-                    { text: "Attempt to play the crystal instrument", nextChapter: 5 }
+                    { text: "Look for another entrance", nextChapter: 5 }
                 ]
             },
             {
                 id: 3,
-                text: "The cave is damp and dark, your torch casting dancing shadows on the walls. You discover an underground river with a small boat tied to a stalagmite. Further in, you notice ancient writings on the wall that might be important.",
+                text: "The cave is damp and dark. You discover an underground river with a small boat tied to a stalagmite.",
                 choices: [
                     { text: "Take the boat down the river", nextChapter: 6 },
-                    { text: "Study the ancient writings", nextChapter: 7 }
-                ]
-            },
-            {
-                id: 4,
-                text: "After hours of careful manipulation, the disks align perfectly. The massive stone door groans open, revealing a treasure chamber filled with gold artifacts and precious gems. You've found the main treasure room!",
-                choices: [
-                    { text: "Take the treasures and return home", nextChapter: 8 },
-                    { text: "Explore further into the temple", nextChapter: 9 }
+                    { text: "Continue on foot", nextChapter: 7 }
                 ]
             }
         ]
@@ -46,10 +38,10 @@ let stories = [
         chapters: [
             {
                 id: 1,
-                text: "The village elder has tasked you with scaling Dragon's Peak to retrieve the legendary Ice Crystal. The mountain looms above you, its peak hidden in clouds. You can see two possible routes up the mountain.",
+                text: "The village elder has tasked you with scaling Dragon's Peak. The mountain looms above you, its peak hidden in clouds.",
                 choices: [
-                    { text: "Take the steep but direct cliff path", nextChapter: 2 },
-                    { text: "Follow the longer but safer forest route", nextChapter: 3 }
+                    { text: "Take the steep cliff path", nextChapter: 2 },
+                    { text: "Follow the forest route", nextChapter: 3 }
                 ]
             }
         ]
@@ -73,14 +65,31 @@ const choicesContainer = document.getElementById('choices');
 const progressFill = document.getElementById('progressFill');
 const progressText = document.getElementById('progressText');
 
+// Share/Import Elements
+const shareModal = document.getElementById('shareModal');
+const importModal = document.getElementById('importModal');
+const shareLink = document.getElementById('shareLink');
+const copyLinkBtn = document.getElementById('copyLinkBtn');
+const exportJsonBtn = document.getElementById('exportJsonBtn');
+const exportTextBtn = document.getElementById('exportTextBtn');
+const closeShareModal = document.getElementById('closeShareModal');
+const closeImportModal = document.getElementById('closeImportModal');
+const importStoryBtn = document.getElementById('importStoryBtn');
+const jsonFileInput = document.getElementById('jsonFileInput');
+const importText = document.getElementById('importText');
+const importFromTextBtn = document.getElementById('importFromTextBtn');
+
 // Current story state
 let currentStory = null;
 let currentChapter = null;
+let currentStoryForShare = null;
 
 // Initialize the app
 function init() {
     loadStories();
     setupEventListeners();
+    setupShareImportListeners();
+    checkUrlForImportedStory();
     showStorySelection();
 }
 
@@ -104,6 +113,24 @@ function setupEventListeners() {
     backToStoriesBtn.addEventListener('click', showStorySelection);
     backToSelectionBtn.addEventListener('click', showStorySelection);
     saveStoryBtn.addEventListener('click', saveNewStory);
+}
+
+// Share/Import event listeners
+function setupShareImportListeners() {
+    importStoryBtn.addEventListener('click', openImportModal);
+    closeShareModal.addEventListener('click', closeModals);
+    closeImportModal.addEventListener('click', closeModals);
+    copyLinkBtn.addEventListener('click', copyShareLink);
+    exportJsonBtn.addEventListener('click', exportAsJson);
+    exportTextBtn.addEventListener('click', exportAsText);
+    jsonFileInput.addEventListener('change', handleFileImport);
+    importFromTextBtn.addEventListener('click', importFromText);
+    
+    // Close modals when clicking outside
+    window.addEventListener('click', (e) => {
+        if (e.target === shareModal) closeModals();
+        if (e.target === importModal) closeModals();
+    });
 }
 
 // Screen management
@@ -142,8 +169,22 @@ function renderStoryList() {
             <h3>${story.title}</h3>
             <p>${story.description}</p>
             <small>${story.chapters.length} chapters</small>
+            <div class="story-actions">
+                <button class="btn-small play-btn" data-id="${story.id}">🎮 Play</button>
+                <button class="btn-small share-btn" data-id="${story.id}">📤 Share</button>
+            </div>
         `;
-        storyCard.addEventListener('click', () => showStoryScreen(story));
+        
+        // Add event listeners
+        const playBtn = storyCard.querySelector('.play-btn');
+        const shareBtn = storyCard.querySelector('.share-btn');
+        
+        playBtn.addEventListener('click', () => showStoryScreen(story));
+        shareBtn.addEventListener('click', () => {
+            currentStoryForShare = story;
+            openShareModal();
+        });
+        
         storyList.appendChild(storyCard);
     });
 }
@@ -198,22 +239,16 @@ function saveNewStory() {
     }
 
     const newStory = {
-        id: Date.now(), // Simple ID generation
+        id: Date.now(),
         title,
         description,
         chapters: [
             {
                 id: 1,
-                text: "This is the beginning of your story. Click 'Add Chapter' to continue building your adventure!",
+                text: "This is the beginning of your story. Edit the code to add more chapters!",
                 choices: [
-                    { text: "Add your first choice here", nextChapter: 2 }
-                ]
-            },
-            {
-                id: 2,
-                text: "This is your second chapter. You can edit these in the code to create your full story!",
-                choices: [
-                    { text: "Continue the adventure", nextChapter: 3 }
+                    { text: "Choice 1", nextChapter: 2 },
+                    { text: "Choice 2", nextChapter: 3 }
                 ]
             }
         ]
@@ -222,8 +257,158 @@ function saveNewStory() {
     stories.push(newStory);
     saveStories();
     showStorySelection();
+    showToast('Story created successfully!');
+}
+
+// Share/Import Functions
+function openShareModal() {
+    if (!currentStoryForShare) return;
     
-    alert('Story created! You can now edit the chapters in the stories.json file to build your full adventure.');
+    const storyData = encodeURIComponent(JSON.stringify(currentStoryForShare));
+    const shareUrl = `${window.location.origin}${window.location.pathname}?import=${storyData}`;
+    shareLink.value = shareUrl;
+    
+    shareModal.classList.add('active');
+    showToast('Share link generated!');
+}
+
+function openImportModal() {
+    importModal.classList.add('active');
+}
+
+function closeModals() {
+    shareModal.classList.remove('active');
+    importModal.classList.remove('active');
+    currentStoryForShare = null;
+}
+
+function copyShareLink() {
+    shareLink.select();
+    shareLink.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(shareLink.value);
+    showToast('Link copied to clipboard!');
+}
+
+function exportAsJson() {
+    if (!currentStoryForShare) return;
+    
+    const dataStr = JSON.stringify(currentStoryForShare, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(dataBlob);
+    link.download = `${currentStoryForShare.title.replace(/\s+/g, '_')}.json`;
+    link.click();
+    
+    showToast('Story exported as JSON!');
+}
+
+function exportAsText() {
+    if (!currentStoryForShare) return;
+    
+    let textContent = `Title: ${currentStoryForShare.title}\n`;
+    textContent += `Description: ${currentStoryForShare.description}\n\n`;
+    
+    currentStoryForShare.chapters.forEach((chapter, index) => {
+        textContent += `=== Chapter ${index + 1} ===\n`;
+        textContent += `${chapter.text}\n\n`;
+        textContent += `Choices:\n`;
+        chapter.choices.forEach((choice, choiceIndex) => {
+            textContent += `${choiceIndex + 1}. ${choice.text}\n`;
+        });
+        textContent += '\n';
+    });
+    
+    const dataBlob = new Blob([textContent], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(dataBlob);
+    link.download = `${currentStoryForShare.title.replace(/\s+/g, '_')}.txt`;
+    link.click();
+    
+    showToast('Story exported as text!');
+}
+
+function handleFileImport(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const storyData = JSON.parse(e.target.result);
+            importStory(storyData);
+        } catch (error) {
+            showToast('Invalid JSON file!', true);
+        }
+    };
+    reader.readAsText(file);
+}
+
+function importFromText() {
+    const text = importText.value.trim();
+    if (!text) {
+        showToast('Please paste JSON data!', true);
+        return;
+    }
+    
+    try {
+        const storyData = JSON.parse(text);
+        importStory(storyData);
+    } catch (error) {
+        showToast('Invalid JSON format!', true);
+    }
+}
+
+function importStory(storyData) {
+    if (!storyData.title || !storyData.chapters || !Array.isArray(storyData.chapters)) {
+        showToast('Invalid story format!', true);
+        return;
+    }
+    
+    storyData.id = Date.now();
+    stories.push(storyData);
+    saveStories();
+    renderStoryList();
+    closeModals();
+    
+    showToast(`"${storyData.title}" imported successfully!`);
+    importText.value = '';
+    jsonFileInput.value = '';
+}
+
+function checkUrlForImportedStory() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const importData = urlParams.get('import');
+    
+    if (importData) {
+        try {
+            const storyData = JSON.parse(decodeURIComponent(importData));
+            if (confirm(`Import the story "${storyData.title}"?`)) {
+                importStory(storyData);
+                const cleanUrl = window.location.origin + window.location.pathname;
+                window.history.replaceState({}, document.title, cleanUrl);
+            }
+        } catch (error) {
+            showToast('Invalid share link!', true);
+        }
+    }
+}
+
+function showToast(message, isError = false) {
+    const existingToasts = document.querySelectorAll('.toast');
+    existingToasts.forEach(toast => toast.remove());
+    
+    const toast = document.createElement('div');
+    toast.className = `toast ${isError ? 'error' : ''}`;
+    toast.textContent = message;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+        }
+    }, 3000);
 }
 
 // Initialize the app when page loads
